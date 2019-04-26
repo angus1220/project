@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 #include <cmath>
 using namespace std;
 void setup(int tableseats[], string dishnames[], int dishprices[]){
@@ -37,8 +38,15 @@ void setup(int tableseats[], string dishnames[], int dishprices[]){
   }
 }
 int main(){
-  'tableseats.txt'.seekg(0, ios::end);
-  if ('tableseats.txt'.tellg() == 0){
+  string testing;
+  int testing2=0;
+  ifstream fin;
+  fin.open("dishprices.txt");
+  while(getline(fin,testing)){
+    testing2++;
+  }
+  fin.close();
+  if (testing2==0){
     int max_num_seats;
     int count=0;
     int num_seats;
@@ -100,40 +108,42 @@ int main(){
       cout<<dishprices[i];
       cout<<dishnames[i]<<endl;
     }
-  }
-
-  else{
-    ifstream fin;
-    fin.open("dishprices.txt");
-    int dishpricelen;
-    fin>>dishpricelen;
-    int*dishprices=new int[dishpricelen];
-    for(int i=1;i<stoi(to_string(dishpricelen))+1;i++){
-      fin>>dishprices[i];
+    ofstream fout;
+    fout.open("dishprices.txt",ios::out);
+    fout<<dish_number<<" ";
+    for(int i=0;i<dish_number;i++){
+      fout<<dishprices[i]<<" ";
     }
-    fin.close();
-    for(int i=1;i<stoi(to_string(dishpricelen))+1;i++){
-      cout<<dishprices[i];
+    fout.close();
+    fout.open("dishnames.txt",ios::out);
+    fout<<dish_number<<" ";
+    for(int i=0;i<dish_number;i++){
+      fout<<dishnames[i]<<" ";
     }
+    fout.close();
+    fout.open("tableseats.txt",ios::out);
+    fout<<max_num_seats<<" ";
+    for(int i=0;i<max_num_seats;i++){
+      fout<<tableseats[i]<<" ";
+    }
+    fout.close();
   }
-  //
-  ofstream fout;
-  fout.open("dishprices.txt",ios::out);
-  fout<<dish_number<<" ";
-  for(int i=0;i<dish_number;i++){
-    fout<<dishprices[i]<<" ";
+  fin.open("dishprices.txt",ios::in);
+  int dishpricelen;
+  fin>>dishpricelen;
+  int*dishprices=new int[dishpricelen];
+  for(int i=1;i<stoi(to_string(dishpricelen))+1;i++){
+    fin>>dishprices[i];
   }
-  fout.close();
-  //
-  fout.open("dishnames.txt",ios::out);
-  fout<<dish_number<<" ";
-  for(int i=0;i<dish_number;i++){
-    fout<<dishnames[i]<<" ";
+  fin.close();
+  for(int i=1;i<stoi(to_string(dishpricelen))+1;i++){
+    cout<<dishprices[i];
   }
-  fout.close();
+  cout<<"5678";
   fin.open("dishnames.txt",ios::in);
   int dishnamelen;
   fin>>dishnamelen;
+  string*dishnames=new string[dishnamelen];
   for(int i=1;i<stoi(to_string(dishnamelen))+1;i++){
     fin>>dishnames[i];
   }
@@ -141,23 +151,16 @@ int main(){
   for(int i=1;i<stoi(to_string(dishpricelen))+1;i++){
     cout<<dishnames[i];
   }
-  //
-  fout.open("tableseats.txt",ios::out);
-  fout<<max_num_seats<<" ";
-  for(int i=0;i<max_num_seats;i++){
-    fout<<tableseats[i]<<" ";
-  }
-  fout.close();
   fin.open("tableseats.txt",ios::in);
   int tablelen;
   fin>>tablelen;
+  int*tableseats=new int[tablelen];
   for(int i=1;i<stoi(to_string(tablelen))+1;i++){
     fin>>tableseats[i];
   }
   fin.close();
   for(int i=1;i<stoi(to_string(tablelen))+1;i++){
     cout<<tableseats[i];
-  }
   cout<<"----FIRST TIME USER SETUP COMPLETE----"<<endl;
   int choice;
   while(choice!=6){
@@ -178,6 +181,7 @@ int main(){
   }
   cout<<"Thanks for using this program"<<endl;
   cout<<"The tables and menu settings are saved"<<endl;
-  cout<<"They will be available when this program is run next time";
+  cout<<"They will be available when this program is run next time"<<endl;
   return 0;
+}
 }
