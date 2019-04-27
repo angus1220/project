@@ -1,3 +1,10 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+using namespace std;
 void choice3(int seatsavailable[], int tablenumber[]){
   int search;
   cout<<"Number of table to be checked:"<<endl;

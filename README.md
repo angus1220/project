@@ -1,3 +1,16 @@
-# project1220
-First, we may need to edit the total number of the tables and the size of them, and these should be able to change by user inputs in the system. Then, we may need to establish a list of the tables regarding on each time slot. When the people book the table, that table should be removed from the list. So, when we check whether a table is available or not, we can go through the lis, and when me occupy or release a table, we can simply remove or add table into the list. We may need to read users’ input on the number of customers, so we need to compare it with the sizes of all tables and list one of the tables with minimal enough seats. Moreover, we also need to mark all the occupy time of the tables by introducing a time system in the program.
-Our program will perform a few features. First of all, the program would provide a ticket system which allows diners to take a ticket and wait for their turn. Different numbers of diners together will be seperated to different queues and wait for tables of different sizes. Also, the program will show the number of tables occupied and empty, and will automatically allocate diners to a specific table with the correct number of seats when it is their turn. The program also consists of an ordering system which could help waiters with the ordering process. It will provide information for waiters of each dish/drink every table has ordered, and it will give them a better time to give the diners good service. At the end, the program will also calculate the bill for each table, and help with the cashier's work. Moreover, the program will do some detections, for example, notifying the restaurants owners which tables have been occupied for a long time, in order to utilize the operation of the restaurant. It will also have a different setting during different seasons and times in the year.
+HOW TO USE:
+make target
+./ target
+This programme is for the shop owners and waiters to use. It consists of a few parts. 
+First, the shop owner can input the shop table settings(the numbers of tables of different numbers of seats). Then they can edit the menu with their dishes and their relative prices. These settings are saved into txt files and will be still available when the programme is terminated and run again(in real-life situation, when the shop closes and opens again tomorrow, the settings will still be available) 
+Then, 11 options will be available for the waiters to manage the restaurant. 
+Choice 1: Enables the waiters to reset the table information(maybe due to season changes), and the menu.
+Choice 2: Enables the waiters to check the availablity of every table.
+Choice 3: Enables the waiters to check specifically the fullness of a table. 
+Choice 4: Enables the waiters to register new customers and assign a customer code to them. The customers are led to a vacant table or instructed to line up in queue
+Choice 5: Enables the waiters to check the queue(how many people are waiting, how long have they been waiting) Choice 6: Enables the waiters to check where a specific group of customers are sitting 
+Choice 7: Enables the waiters to help take in orders from customers 
+Choice 8: Enables the waiters to get paid from customers, unoccupy a table and lead customers in the queue to the vacant table if available
+Choice 9: Shows the waiters the menu and the dishes' relative prices
+Choice 10: Check for tables which are occupied for over one hour
+Choice 11: Close the restaurant(Terminating the program) As a lot of time is wasted for customers waiting the tables for the exact number of seats, or when there are no table sizes for a specific group of customers, different customer groups will sit together.

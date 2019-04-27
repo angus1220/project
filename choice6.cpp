@@ -1,3 +1,10 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+using namespace std;
 int choice6(int availability[], int seating_plan[],int sitting_end,int sitting_start){
   if (sitting_start==sitting_end){
     cout<<"No customers are in the restaurant"<<endl;

@@ -5,31 +5,159 @@
 #include <cmath>
 #include <ctime>
 using namespace std;
-void choice8(int timing[],int availability[],int queue[], int seatsavailable[], int customer_bill[],int seating_plan[],int &sitting_end,int &sitting_start, int &queue_start, int &queue_end);
 void choice7(int availability[], string dishnames[], int dishprices[], int customer_bill[], int sitting_start, int sitting_end);
 int choice6(int availability[], int seating_plan[],int sitting_end,int sitting_start);
-void choice5(int availability[], int timing[],int queue[],int queue_start, int queue_end);
-void choice4b(int availability[], int tablenumber[],int timing[], int seating_plan[], int seatsavailable[], int queue[], int &sitting_end, int no_of_customers, int &queue_start, int &queue_end, int&indication);
-void choice4a(int tablenumber[],int queue[],int max_num_seats,int customercounter,int &indicator,int &no_of_customers);
+void choice9(string dishnames[],int dishprices[]);
 void choice3(int seatsavailable[], int tablenumber[]);
 void choice2(int wow[], int tablenumber[]);
-  cout<<"Input the number of customers"<<endl;
 int timer(){
   time_t current_time;
 	current_time = time(NULL);
 	tm *local = localtime(&current_time);
   return (3600*(local->tm_hour)+60*(local->tm_min)+local->tm_sec);
 }
-void choice10(int timing[], int availability[], int sitting_start, int sitting_end){
-  for (int i=sitting_start+1;i<sitting_end+1;i++){
-    if(availability[i]==1 and timer()-timing[i]>3600){
-      cout<<"Customer code "<<i<<" has been in the restaurant for over 1 hour";
+void choice5(int availability[], int timing[],int queue[],int queue_start, int queue_end){
+  if(queue_start==queue_end){
+    cout<<"No customers are in the queue"<<endl;
+  }
+  else{
+    int indicator=0;
+    for(int i=queue_start;i<queue_end;i++){
+      if (availability[i]==0){
+        int a=timer()-timing[i];
+        if (a>=3600){
+          if(indicator==0){
+            cout<<"WARNING: The following customers have waited for over 15 minutes"<<endl;
+            indicator=1;
+          }
+          cout<<"Customer code: "<<i+1<<" Number of customers: "<<queue[i]<<" Waited for: "<<a/3600<<" hrs "<<(a%3600)/60<<" mins "<<a%60<<" secs"<<endl;
+        }
+        else if(a<3600 and a>900){
+          if(indicator==0){
+            cout<<"WARNING: The following customers have waited for over 15 minutes"<<endl;
+            indicator=1;
+          }
+          cout<<"Customer code: "<<i+1<<" Number of customers: "<<queue[i]<<" Waited for: "<<a/60<<" mins "<<a%60<<" secs"<<endl;
+        }
+        else if(a<=900 and a>=60){
+          if (indicator==1){
+            cout<<"************************************************************"<<endl;
+            indicator=2;
+          }
+          cout<<"Customer code: "<<i+1<<" Number of customers: "<<queue[i]<<" Waited for: "<<a/60<<" mins "<<a%60<<" secs"<<endl;
+        }
+        else if(a<60){
+          if (indicator==1){
+            cout<<"************************************************************"<<endl;
+            indicator=2;
+          }
+          cout<<"Customer code: "<<i+1<<" Number of customers: "<<queue[i]<<" Waited for: "<<a<<" secs"<<endl;
+        }
+      }
     }
   }
 }
-void choice9(string dishnames[],int dishprices[]){
-  for(int i=1;i<dishprices[0]+1;i++){
-    cout<<i<<". "<<dishnames[i]<<" $"<<dishprices[i]<<endl;
+
+void choice8(int timing[],int availability[],int queue[], int seatsavailable[], int customer_bill[],int seating_plan[],int &sitting_end,int &sitting_start, int &queue_start, int &queue_end){
+  if (sitting_start==sitting_end){
+    cout<<"No customers are in the restaurant"<<endl;
+  }
+  else{
+  int which_table;
+    cout<<"Enter the customer code you want to search"<<endl;
+    if(sitting_start+1==sitting_end){
+      cout<<"(Please enter "<<sitting_start+1<<" as it is the only customer now)"<<endl;
+    }
+    else{
+      cout<<"(Please enter a positive integer from "<<sitting_start+1<<" to "<<sitting_end<<")"<<endl;
+    }
+    cin>>which_table;
+    while (availability[which_table-1]==0){
+      cout<<"Customer code "<<which_table<<" is not in the restaurant"<<endl;
+      cout<<"Please try again:"<<endl;
+      cin>>which_table;
+    }
+    cout<<"Customer code "<<which_table<<" are sitting at Table "<<seating_plan[which_table-1]<<endl;
+    seatsavailable[seating_plan[which_table-1]]+=queue[which_table-1];
+    cout<<"Bill of customer code "<<which_table<<": $"<<customer_bill[which_table]<<endl;
+    availability[which_table-1]=0;
+    if(which_table==sitting_start+1){
+      int i=0;
+      while(availability[i]!=1){
+        i++;
+      }
+      sitting_start=i;
+    }
+    if(timer()-timing[queue_start]>600){
+      int tempor;
+      tempor=queue_start;
+      if (queue[tempor]<=seatsavailable[seating_plan[which_table-1]]){
+        seatsavailable[seating_plan[which_table-1]]-=queue[tempor];
+        availability[tempor]=1;
+        seating_plan[tempor]=seating_plan[which_table-1];
+        cout<<"Table "<<seating_plan[which_table-1]<<" is available for customer code "<<tempor+1<<endl;
+        timing[tempor]=timer();
+        sitting_end=tempor+1;
+        }
+      else{
+        cout<<"No tables available for the queue"<<endl;
+      }
+
+    }
+    else{
+      int tempor;
+      tempor=queue_start;
+      while(tempor!=queue_end){
+        if (queue[tempor]<=seatsavailable[seating_plan[which_table-1]]){
+          seatsavailable[seating_plan[which_table-1]]-=queue[tempor];
+          availability[tempor]=1;
+          seating_plan[tempor]=seating_plan[which_table-1];
+          cout<<"Table "<<seating_plan[which_table-1]+1<<" is available for customer code "<<tempor+1<<endl;
+          timing[tempor]=timer();
+          if (sitting_end<tempor+1){
+            sitting_end=tempor+1;
+          }
+          break;
+        }
+        else{
+          tempor+=1;
+        }
+      }
+    }
+  }
+}
+void choice4a(int tablenumber[],int queue[],int max_num_seats,int customercounter,int &indicator,int &no_of_customers){
+  cout<<"Input the number of customers"<<endl;
+  cout<<"(Please input a positive integer)"<<endl;
+  cin>>no_of_customers;
+  if(no_of_customers>max_num_seats){
+    cout<<"Sorry, no tables are large enough"<<endl;
+    cout<<"Please consider splitting tables and register again"<<endl;
+    indicator=-1;
+  }
+  else{
+    queue[customercounter]=no_of_customers;
+  }
+}
+void choice4b(int availability[], int tablenumber[],int timing[], int seating_plan[], int seatsavailable[], int queue[], int &sitting_end, int no_of_customers, int &queue_start, int &queue_end, int&indication){
+  int indicator;
+  indicator=queue_start;
+  for(int i=0;i<seatsavailable[0];i++){
+    if (queue[queue_end-1]<=seatsavailable[i+1]){
+      seatsavailable[i+1]-=no_of_customers;
+      cout<<"Table "<<i+1<<" is available"<<endl;
+      indication=1;
+      availability[queue_start]=1;
+      seating_plan[queue_start]=i+1;
+      timing[queue_start]=timer();
+      queue_start++;
+      sitting_end++;
+      break;
+    }
+  }
+  if (indicator==queue_start){
+    cout<<"No tables are available at the moment"<<endl;
+    timing[queue_end-1]=timer();
   }
 }
 void choice1(int tableseats[], string dishnames[], int dishprices[], int seatsavailable[], int tablenumber[]){
@@ -319,9 +447,9 @@ int main(){
   int sitting_end=0;
   int queue_start=0;
   int queue_end=0;
-  while(choice!=11){
+  while(choice!=10){
     cout<<"************************************************************"<<endl;
-    cout<<"Please enter command code (1-11)"<<endl;
+    cout<<"Please enter command code (1-10)"<<endl;
     cout<<"1. Change user-setup(tables/menu)"<<endl;
     cout<<"2. Check table information"<<endl;
     cout<<"3. Check availability of table"<<endl;
@@ -331,8 +459,7 @@ int main(){
     cout<<"7. Taking orders from customers"<<endl;
     cout<<"8. Receive payment and release table"<<endl;
     cout<<"9. Look at menu"<<endl;
-    cout<<"10. Check for tables occupied for over one hour"<<endl;
-    cout<<"11. Close the restaurant(Terminate program)"<<endl;
+    cout<<"10. Close the restaurant(Terminate program)"<<endl;
     cin>>choice;
     if(choice==1){
       choice1(tableseats, dishnames, dishprices,seatsavailable,tablenumber);
@@ -387,9 +514,6 @@ int main(){
     }
     if(choice==9){
       choice9(dishnames,dishprices);
-    }
-    if(choice==10){
-      choice10(timing,availability,sitting_start,sitting_end);
     }
   }
   cout<<"************************************************************"<<endl;
