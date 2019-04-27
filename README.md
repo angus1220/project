@@ -12,5 +12,4 @@ Choice 5: Enables the waiters to check the queue(how many people are waiting, ho
 Choice 7: Enables the waiters to help take in orders from customers 
 Choice 8: Enables the waiters to get paid from customers, unoccupy a table and lead customers in the queue to the vacant table if available
 Choice 9: Shows the waiters the menu and the dishes' relative prices
-Choice 10: Check for tables which are occupied for over one hour
-Choice 11: Close the restaurant(Terminating the program) As a lot of time is wasted for customers waiting the tables for the exact number of seats, or when there are no table sizes for a specific group of customers, different customer groups will sit together.
+Choice 10: Close the restaurant(Terminating the program) As a lot of time is wasted for customers waiting the tables for the exact number of seats, or when there are no table sizes for a specific group of customers, different customer groups will sit together.
